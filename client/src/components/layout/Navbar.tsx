@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, User, Plus, LogOut } from "lucide-react";
+import { Menu, X, User, Plus, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/firebase";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,9 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { countries } from "@shared/schema";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [location, navigate] = useLocation();
   const { currentUser, isLoading } = useAuth();
 
@@ -31,6 +33,10 @@ export default function Navbar() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  
+  const toggleCountryDropdown = () => {
+    setIsCountryDropdownOpen(!isCountryDropdownOpen);
   };
 
   const isActive = (path: string) => {
@@ -63,9 +69,30 @@ export default function Navbar() {
               <Link href="/add-group" className={`${isActive('/add-group') ? 'border-[#25D366] text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
                 Add Group
               </Link>
-              <Link href="/countries/all" className={`${location.startsWith('/countries') ? 'border-[#25D366] text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
-                By Country
-              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger className={`${location.startsWith('/countries') ? 'border-[#25D366] text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium focus:outline-none`}>
+                  <span className="flex items-center">
+                    By Country <ChevronDown className="ml-1 h-4 w-4" />
+                  </span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48 max-h-[70vh] overflow-auto">
+                  <DropdownMenuItem onClick={() => navigate("/countries/all")}>
+                    All Countries
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/countries/Global")}>
+                    Global
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {countries.map((country) => (
+                    <DropdownMenuItem 
+                      key={country} 
+                      onClick={() => navigate(`/countries/${encodeURIComponent(country)}`)}
+                    >
+                      {country}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Link href="/about" className={`${isActive('/about') ? 'border-[#25D366] text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
                 About
               </Link>
@@ -146,9 +173,37 @@ export default function Navbar() {
           <Link href="/add-group" className={`${isActive('/add-group') ? 'bg-gray-50 border-[#25D366] text-[#128C7E]' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}>
             Add Group
           </Link>
-          <Link href="/countries/all" className={`${location.startsWith('/countries') ? 'bg-gray-50 border-[#25D366] text-[#128C7E]' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}>
-            By Country
-          </Link>
+          <div>
+            <button 
+              onClick={toggleCountryDropdown}
+              className={`${location.startsWith('/countries') ? 'bg-gray-50 border-[#25D366] text-[#128C7E]' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'} w-full text-left flex justify-between items-center pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+            >
+              By Country
+              <ChevronDown className={`h-4 w-4 transition-transform ${isCountryDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {isCountryDropdownOpen && (
+              <div className="ml-4 border-l border-gray-200 pl-4 mt-1 mb-2 space-y-1">
+                <Link href="/countries/all" className="block py-2 text-sm text-gray-600 hover:text-gray-900">
+                  All Countries
+                </Link>
+                <Link href="/countries/Global" className="block py-2 text-sm text-gray-600 hover:text-gray-900">
+                  Global
+                </Link>
+                <div className="py-1 border-t border-b border-gray-100 my-1">
+                  {countries.map((country) => (
+                    <Link 
+                      key={country} 
+                      href={`/countries/${encodeURIComponent(country)}`}
+                      className="block py-2 text-sm text-gray-600 hover:text-gray-900"
+                    >
+                      {country}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
           <Link href="/about" className={`${isActive('/about') ? 'bg-gray-50 border-[#25D366] text-[#128C7E]' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}>
             About
           </Link>

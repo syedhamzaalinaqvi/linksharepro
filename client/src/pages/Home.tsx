@@ -9,6 +9,7 @@ import GroupCard from "@/components/groups/GroupCard";
 import GroupCardCompact from "@/components/groups/GroupCardCompact";
 import FeatureSection from "@/components/home/FeatureSection";
 import CTASection from "@/components/home/CTASection";
+import EducationalSection from "@/components/home/EducationalSection";
 import type { WhatsappGroup } from "@shared/schema";
 
 export default function Home() {
@@ -115,6 +116,8 @@ export default function Home() {
         </div>
         
         <FeatureSection />
+        
+        <EducationalSection />
         
         <CTASection />
       </main>
