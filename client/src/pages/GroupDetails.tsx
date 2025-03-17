@@ -93,7 +93,7 @@ export default function GroupDetails() {
       <Navbar />
       
       <main className="flex-grow max-w-4xl mx-auto w-full px-4 py-12">
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden mb-8">
           <div className="relative h-64 w-full">
             <img 
               src={group.image_url || "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&h=400"} 
@@ -144,6 +144,12 @@ export default function GroupDetails() {
             </div>
           </CardContent>
         </Card>
+        
+        {/* WhatsApp Educational Blog Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">WhatsApp Group Information</h2>
+          <WhatsAppBlog />
+        </div>
       </main>
       
       <Footer />

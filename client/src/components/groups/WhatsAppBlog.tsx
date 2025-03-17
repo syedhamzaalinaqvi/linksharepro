@@ -136,8 +136,8 @@ export default function WhatsAppBlog() {
               You can control who can add you to groups:
             </p>
             <ol className="list-decimal pl-5 space-y-1">
-              <li>Go to WhatsApp Settings > Account > Privacy > Groups</li>
-              <li>Choose either "Everyone," "My Contacts," or "My Contacts Except..."</li>
+              <li>Go to WhatsApp Settings {`>`} Account {`>`} Privacy {`>`} Groups</li>
+              <li>Choose either &quot;Everyone,&quot; &quot;My Contacts,&quot; or &quot;My Contacts Except...&quot;</li>
             </ol>
             
             <h4 className="font-semibold mt-2">Reporting Problems</h4>
@@ -145,9 +145,9 @@ export default function WhatsAppBlog() {
               If you encounter inappropriate content or behavior:
             </p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Report specific messages by long-pressing them and selecting "Report"</li>
+              <li>Report specific messages by long-pressing them and selecting &quot;Report&quot;</li>
               <li>Contact the group admin about problematic members</li>
-              <li>Leave groups that don't maintain appropriate standards</li>
+              <li>Leave groups that don&apos;t maintain appropriate standards</li>
               <li>Block contacts who send unwanted messages</li>
             </ul>
           </AccordionContent>
