@@ -73,8 +73,8 @@ export class MemStorage implements IStorage {
 
   async getFeaturedGroups(limit = 3): Promise<WhatsappGroup[]> {
     return Array.from(this.groups.values())
-      .filter(group => group.featured > 0)
-      .sort((a, b) => b.featured - a.featured)
+      .filter(group => (group.featured || 0) > 0)
+      .sort((a, b) => (b.featured || 0) - (a.featured || 0))
       .slice(0, limit);
   }
 
@@ -120,6 +120,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Business Network USA",
       category: "Business",
+      country: "United States",
       whatsapp_link: "https://chat.whatsapp.com/example1",
       image_url: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "Connect with entrepreneurs and business professionals across the USA",
@@ -130,6 +131,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Tech Enthusiasts",
       category: "Technology",
+      country: "Global",
       whatsapp_link: "https://chat.whatsapp.com/example2",
       image_url: "https://images.unsplash.com/photo-1558021212-51b6ecfa0db9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "Stay updated with the latest in technology, gadgets and programming",
@@ -140,6 +142,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Book Lovers Club",
       category: "Education",
+      country: "United Kingdom",
       whatsapp_link: "https://chat.whatsapp.com/example3",
       image_url: "https://images.unsplash.com/photo-1495020689067-958852a7765e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "A community for bookworms to discuss and recommend great reads",
@@ -151,6 +154,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Fitness Motivation",
       category: "Health",
+      country: "Canada",
       whatsapp_link: "https://chat.whatsapp.com/example4",
       image_url: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "Daily workout tips and motivation to stay fit",
@@ -161,6 +165,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Travel Enthusiasts",
       category: "Travel",
+      country: "Australia",
       whatsapp_link: "https://chat.whatsapp.com/example5",
       image_url: "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "Share travel experiences and tips with fellow travelers",
@@ -171,6 +176,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Digital Marketing Masters",
       category: "Marketing",
+      country: "India",
       whatsapp_link: "https://chat.whatsapp.com/example6",
       image_url: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "Learn and discuss digital marketing strategies",
@@ -181,6 +187,7 @@ export class MemStorage implements IStorage {
     this.createGroup({
       group_name: "Crypto Investors",
       category: "Finance",
+      country: "Singapore",
       whatsapp_link: "https://chat.whatsapp.com/example7",
       image_url: "https://images.unsplash.com/photo-1556248305-84a22817f323?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
       description: "Discussions on cryptocurrency investments and market trends",

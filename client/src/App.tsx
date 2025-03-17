@@ -10,6 +10,7 @@ import Home from "@/pages/Home";
 import AddGroup from "@/pages/AddGroup";
 import GroupDetails from "@/pages/GroupDetails";
 import CategoryPage from "@/pages/CategoryPage";
+import CountryPage from "@/pages/CountryPage";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Privacy from "@/pages/Privacy";
@@ -26,6 +27,8 @@ function Router() {
       <Route path="/group/:id" component={GroupDetails} />
       <Route path="/groups/:category" component={CategoryPage} />
       <Route path="/groups" component={CategoryPage} />
+      <Route path="/countries/:country" component={CountryPage} />
+      <Route path="/countries" component={CountryPage} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/privacy" component={Privacy} />
