@@ -41,7 +41,7 @@ export const categories = [
 
 // Countries definition
 export const countries = [
-  "Global", "United States", "India", "United Kingdom", "Canada", "Australia", 
+  "Global", "United States", "India", "Pakistan", "United Kingdom", "Canada", "Australia", 
   "Germany", "France", "Spain", "Italy", "Brazil", "Mexico", "Japan", 
   "China", "South Korea", "Nigeria", "South Africa", "UAE", "Singapore", "Other"
 ];
