@@ -1,7 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWhatsappGroupSchema, categories } from "@shared/schema";
+import { insertWhatsappGroupSchema, categories, countries } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 
@@ -75,6 +75,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all available categories
   app.get("/api/categories", (_req: Request, res: Response) => {
     return res.json(categories);
+  });
+  
+  // Get all available countries
+  app.get("/api/countries", (_req: Request, res: Response) => {
+    return res.json(countries);
+  });
+  
+  // Get WhatsApp groups by country
+  app.get("/api/countries/:country", async (req: Request, res: Response) => {
+    try {
+      const { country } = req.params;
+      const groups = await storage.getGroupsByCountry(country);
+      return res.json(groups);
+    } catch (error) {
+      console.error("Error fetching groups by country:", error);
+      return res.status(500).json({ message: "Failed to fetch groups by country" });
+    }
   });
 
   // Create a new WhatsApp group

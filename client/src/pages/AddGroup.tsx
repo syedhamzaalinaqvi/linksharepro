@@ -266,6 +266,7 @@ export default function AddGroup() {
                           placeholder="Describe what your group is about" 
                           className="resize-none" 
                           {...field} 
+                          value={field.value || ""}
                         />
                       </FormControl>
                       <FormMessage />

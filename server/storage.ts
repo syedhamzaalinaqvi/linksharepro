@@ -10,6 +10,7 @@ export interface IStorage {
   getAllGroups(): Promise<WhatsappGroup[]>;
   getGroupById(id: number): Promise<WhatsappGroup | undefined>;
   getGroupsByCategory(category: string): Promise<WhatsappGroup[]>;
+  getGroupsByCountry(country: string): Promise<WhatsappGroup[]>;
   getFeaturedGroups(limit?: number): Promise<WhatsappGroup[]>;
   getRecentGroups(limit?: number): Promise<WhatsappGroup[]>;
   createGroup(group: InsertWhatsappGroup): Promise<WhatsappGroup>;
@@ -61,6 +62,12 @@ export class MemStorage implements IStorage {
   async getGroupsByCategory(category: string): Promise<WhatsappGroup[]> {
     return Array.from(this.groups.values()).filter(
       (group) => group.category.toLowerCase() === category.toLowerCase()
+    );
+  }
+  
+  async getGroupsByCountry(country: string): Promise<WhatsappGroup[]> {
+    return Array.from(this.groups.values()).filter(
+      (group) => group.country.toLowerCase() === country.toLowerCase()
     );
   }
 
