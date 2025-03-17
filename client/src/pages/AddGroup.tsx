@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { fetchOpenGraphData } from "@/lib/ogFetcher";
-import { insertWhatsappGroupSchema, categories } from "@shared/schema";
+import { insertWhatsappGroupSchema, categories, countries } from "@shared/schema";
 import type { InsertWhatsappGroup } from "@shared/schema";
 
 import Navbar from "@/components/layout/Navbar";
@@ -44,6 +44,7 @@ export default function AddGroup() {
     defaultValues: {
       group_name: "",
       category: "",
+      country: "Global",
       whatsapp_link: "",
       description: "",
       image_url: "",
@@ -224,6 +225,35 @@ export default function AddGroup() {
                   )}
                 />
                 
+                {/* Country */}
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Country</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a country" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {countries.map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
                 {/* Description */}
                 <FormField
                   control={form.control}
@@ -257,6 +287,18 @@ export default function AddGroup() {
                           value={field.value || ""} 
                         />
                       </FormControl>
+                      {field.value && (
+                        <div className="mt-2 rounded-md overflow-hidden">
+                          <img 
+                            src={field.value} 
+                            alt="Group preview" 
+                            className="w-full h-48 object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://via.placeholder.com/400x200?text=Image+Not+Found';
+                            }}
+                          />
+                        </div>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

@@ -86,7 +86,11 @@ export class MemStorage implements IStorage {
       ...insertGroup, 
       id, 
       created_at,
-      featured: insertGroup.featured || 0
+      country: insertGroup.country || "Global",
+      featured: insertGroup.featured || 0,
+      description: insertGroup.description || null,
+      image_url: insertGroup.image_url || null,
+      member_count: insertGroup.member_count || null
     };
     this.groups.set(id, group);
     return group;
@@ -98,7 +102,8 @@ export class MemStorage implements IStorage {
       (group) => 
         group.group_name.toLowerCase().includes(lowerQuery) || 
         group.description?.toLowerCase().includes(lowerQuery) ||
-        group.category.toLowerCase().includes(lowerQuery)
+        group.category.toLowerCase().includes(lowerQuery) ||
+        group.country.toLowerCase().includes(lowerQuery)
     );
   }
 

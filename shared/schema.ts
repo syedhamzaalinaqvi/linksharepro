@@ -14,6 +14,7 @@ export const whatsappGroups = pgTable("whatsapp_groups", {
   id: serial("id").primaryKey(),
   group_name: text("group_name").notNull(),
   category: text("category").notNull(),
+  country: text("country").notNull().default("Global"),
   whatsapp_link: text("whatsapp_link").notNull(),
   image_url: text("image_url"),
   description: text("description"),
@@ -36,6 +37,13 @@ export const insertWhatsappGroupSchema = createInsertSchema(whatsappGroups)
 export const categories = [
   "Business", "Education", "Entertainment", "Sports", 
   "Technology", "Travel", "Food", "Health", "Finance", "Marketing", "Others"
+];
+
+// Countries definition
+export const countries = [
+  "Global", "United States", "India", "United Kingdom", "Canada", "Australia", 
+  "Germany", "France", "Spain", "Italy", "Brazil", "Mexico", "Japan", 
+  "China", "South Korea", "Nigeria", "South Africa", "UAE", "Singapore", "Other"
 ];
 
 export const insertUserSchema = createInsertSchema(users).pick({
