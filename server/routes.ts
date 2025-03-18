@@ -154,21 +154,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid WhatsApp group link" });
       }
       
-      // In a real application, you would fetch Open Graph data from the URL
-      // For this demo, return mock data since we can't actually scrape WhatsApp links
-      const ogData = {
-        title: "WhatsApp Group",
-        description: "Join this WhatsApp group!",
-        image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=450",
-        url: url
-      };
+      // Extract the invite code from the WhatsApp URL
+      const inviteCode = url.split('chat.whatsapp.com/')[1]?.split('/')[0];
       
-      return res.json(ogData);
+      if (!inviteCode) {
+        return res.status(400).json({ message: "Could not extract invite code from URL" });
+      }
+
+      try {
+        // Try to fetch actual metadata from WhatsApp if possible
+        // This approach might not work due to WhatsApp's anti-scraping measures
+        const response = await fetch(`https://chat.whatsapp.com/${inviteCode}`, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          }
+        });
+        
+        const html = await response.text();
+        
+        // Try to extract metadata from the HTML
+        const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/);
+        const descriptionMatch = html.match(/<meta property="og:description" content="([^"]+)"/);
+        const imageMatch = html.match(/<meta property="og:image" content="([^"]+)"/);
+        
+        const ogData = {
+          title: titleMatch ? titleMatch[1] : getDefaultTitle(inviteCode),
+          description: descriptionMatch ? descriptionMatch[1] : "Join this WhatsApp group!",
+          image: imageMatch ? imageMatch[1] : "https://whatsapp.com/apple-touch-icon.png",
+          url: url
+        };
+        
+        return res.json(ogData);
+      } catch (fetchError) {
+        console.error("Error fetching from WhatsApp:", fetchError);
+        
+        // If fetching fails, return a formatted response based on the invite code
+        return res.json({
+          title: getDefaultTitle(inviteCode),
+          description: "Join this WhatsApp group!",
+          image: "https://whatsapp.com/apple-touch-icon.png",
+          url: url
+        });
+      }
     } catch (error) {
       console.error("Error fetching OG data:", error);
       return res.status(500).json({ message: "Failed to fetch Open Graph data" });
     }
   });
+  
+  // Helper function to create a formatted title from invite code
+  function getDefaultTitle(inviteCode: string): string {
+    // Convert the invite code to something readable
+    const formatted = inviteCode.replace(/[^a-zA-Z0-9]/g, ' ');
+    return `WhatsApp Group: ${formatted.substring(0, 15)}...`;
+  }
 
   const httpServer = createServer(app);
   return httpServer;
