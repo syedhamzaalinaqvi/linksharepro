@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Hero from "@/components/home/Hero";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CategoryFilter from "@/components/groups/CategoryFilter";
+import FilterSection from "@/components/groups/FilterSection";
 import GroupCard from "@/components/groups/GroupCard";
 import GroupCardCompact from "@/components/groups/GroupCardCompact";
 import FeatureSection from "@/components/home/FeatureSection";
@@ -69,7 +69,7 @@ export default function Home() {
       <main className="flex-grow">
         <Hero />
         
-        <CategoryFilter />
+        <FilterSection />
         
         {/* Featured Groups */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
