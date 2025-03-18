@@ -79,15 +79,43 @@ export default function GroupDetails() {
   
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
-      {/* SEO Metadata */}
+      {/* Enhanced SEO Metadata */}
       <Helmet>
-        <title>{group.group_name} | LinkShare</title>
-        <meta name="description" content={group.description || "Join this WhatsApp group via LinkShare"} />
-        <meta property="og:title" content={group.group_name} />
-        <meta property="og:description" content={group.description || "Join this WhatsApp group via LinkShare"} />
-        <meta property="og:image" content={group.image_url || ""} />
+        <title>{group.group_name} | Join this WhatsApp Group | LinkShare</title>
+        <meta name="description" content={`Join ${group.group_name} - ${group.description || `A ${group.category} WhatsApp group with ${group.member_count || 'many'} members`}. Connect with like-minded people in this active WhatsApp community.`} />
+        <meta name="keywords" content={`${group.group_name}, ${group.category} WhatsApp group, join WhatsApp group, WhatsApp community, WhatsApp link, ${group.country || 'global'} WhatsApp groups`} />
+        <link rel="canonical" href={window.location.href} />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content={`${group.group_name} | Join this WhatsApp Group`} />
+        <meta property="og:description" content={`${group.description || `A ${group.category} WhatsApp group with ${group.member_count || 'many'} members`}. Connect with others in this active community.`} />
+        <meta property="og:image" content={group.image_url || "/og-group-default.jpg"} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={window.location.href} />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${group.group_name} | Join this WhatsApp Group`} />
+        <meta name="twitter:description" content={`${group.description || `A ${group.category} WhatsApp group with ${group.member_count || 'many'} members`}. Connect with others in this active community.`} />
+        <meta name="twitter:image" content={group.image_url || "/og-group-default.jpg"} />
+        
+        {/* Structured Data for Rich Results */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": group.group_name,
+            "description": group.description || `A ${group.category} WhatsApp group`,
+            "category": group.category,
+            "image": group.image_url || "/og-group-default.jpg",
+            "offers": {
+              "@type": "Offer",
+              "availability": "https://schema.org/InStock",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          })}
+        </script>
       </Helmet>
       
       <Navbar />

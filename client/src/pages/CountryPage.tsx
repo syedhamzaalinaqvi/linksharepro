@@ -5,6 +5,7 @@ import type { WhatsappGroup } from "@shared/schema";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import SEOHead from "@/components/seo/SEOHead";
 import GroupCard from "@/components/groups/GroupCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,6 +47,40 @@ export default function CountryPage() {
   
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title={`${selectedCountry === "all" ? "WhatsApp Groups By Country" : `${selectedCountry} WhatsApp Groups`} | LinkShare`}
+        description={`${selectedCountry === "all" ? "Browse WhatsApp groups from countries around the world" : `Join ${selectedCountry} WhatsApp groups and connect with people from ${selectedCountry}`}. Find and share WhatsApp communities by country.`}
+        keywords={`${selectedCountry} WhatsApp groups, WhatsApp groups by country, ${selectedCountry} chat groups, international WhatsApp groups, ${selectedCountry} community groups`}
+        canonicalURL={window.location.href}
+        ogTitle={`${selectedCountry === "all" ? "WhatsApp Groups By Country" : `${selectedCountry} WhatsApp Groups`}`}
+        ogDescription={`${selectedCountry === "all" ? "Browse WhatsApp groups from countries around the world" : `Join ${selectedCountry} WhatsApp groups and connect with people from ${selectedCountry}`}`}
+        ogImage={`/og-country-${selectedCountry.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+        ogType="website"
+        twitterCard="summary_large_image"
+        twitterTitle={`${selectedCountry === "all" ? "WhatsApp Groups By Country" : `${selectedCountry} WhatsApp Groups`}`}
+        twitterDescription={`${selectedCountry === "all" ? "Browse WhatsApp groups from countries around the world" : `Join ${selectedCountry} WhatsApp groups and connect with people from ${selectedCountry}`}`}
+        twitterImage={`/og-country-${selectedCountry.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": `${selectedCountry === "all" ? "WhatsApp Groups By Country" : `${selectedCountry} WhatsApp Groups`}`,
+          "description": `${selectedCountry === "all" ? "Browse WhatsApp groups from countries around the world" : `Find and join WhatsApp groups from ${selectedCountry}`}`,
+          "url": window.location.href,
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": displayGroups.map((group, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "item": {
+                "@type": "SocialMediaPosting",
+                "headline": group.group_name,
+                "description": group.description,
+                "url": `${window.location.origin}/groups/${group.id}`
+              }
+            }))
+          }
+        }}
+      />
       <Navbar />
       
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

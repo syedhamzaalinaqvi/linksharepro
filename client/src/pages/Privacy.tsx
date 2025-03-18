@@ -1,9 +1,30 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import SEOHead from "@/components/seo/SEOHead";
 
 export default function Privacy() {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title="Privacy Policy | LinkShare WhatsApp Group Directory"
+        description="Read our privacy policy to understand how LinkShare collects, uses, and protects your personal information when you use our WhatsApp group directory."
+        keywords="privacy policy, LinkShare privacy, WhatsApp group privacy, data protection, user privacy"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Privacy Policy",
+          "description": "Read our privacy policy to understand how LinkShare collects, uses, and protects your personal information.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "LinkShare",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${window.location.origin}/logo.png`
+            }
+          },
+          "dateModified": "2023-07-01"
+        }}
+      />
       <Navbar />
       
       <main className="flex-grow max-w-4xl mx-auto w-full px-4 py-12">

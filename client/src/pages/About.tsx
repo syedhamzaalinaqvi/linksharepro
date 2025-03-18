@@ -1,9 +1,30 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import SEOHead from "@/components/seo/SEOHead";
 
 export default function About() {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title="About LinkShare | WhatsApp Group Link Directory"
+        description="Learn about LinkShare - The ultimate platform for discovering and sharing WhatsApp groups. Our mission is to connect people with communities that match their interests."
+        keywords="about LinkShare, WhatsApp group platform, WhatsApp group directory, WhatsApp community discovery"
+        ogImage="/og-about-image.jpg"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "LinkShare",
+          "url": window.location.origin,
+          "logo": `${window.location.origin}/logo.png`,
+          "description": "LinkShare is a platform designed to make discovering and sharing WhatsApp groups easier than ever.",
+          "foundingDate": "2023",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "url": `${window.location.origin}/contact`
+          }
+        }}
+      />
       <Navbar />
       
       <main className="flex-grow max-w-4xl mx-auto w-full px-4 py-12">

@@ -1,9 +1,30 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import SEOHead from "@/components/seo/SEOHead";
 
 export default function Terms() {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title="Terms of Service | LinkShare WhatsApp Group Directory"
+        description="Read the Terms of Service for LinkShare WhatsApp Group Directory. Learn about the rules and guidelines for submitting and using WhatsApp groups on our platform."
+        keywords="LinkShare terms, WhatsApp group terms, LinkShare WhatsApp directory terms, WhatsApp group submission guidelines"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Terms of Service",
+          "description": "Terms of Service for the LinkShare WhatsApp Group Directory platform",
+          "publisher": {
+            "@type": "Organization",
+            "name": "LinkShare",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${window.location.origin}/logo.png`
+            }
+          },
+          "dateModified": "2023-07-01T00:00:00+00:00"
+        }}
+      />
       <Navbar />
       
       <main className="flex-grow max-w-4xl mx-auto w-full px-4 py-12">

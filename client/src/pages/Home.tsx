@@ -10,6 +10,7 @@ import GroupCardCompact from "@/components/groups/GroupCardCompact";
 import FeatureSection from "@/components/home/FeatureSection";
 import CTASection from "@/components/home/CTASection";
 import EducationalSection from "@/components/home/EducationalSection";
+import SEOHead from "@/components/seo/SEOHead";
 import type { WhatsappGroup } from "@shared/schema";
 
 export default function Home() {
@@ -25,6 +26,44 @@ export default function Home() {
   
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title="LinkShare - Discover and Join WhatsApp Groups | WhatsApp Group Link Directory"
+        description="Find and join popular WhatsApp groups across various categories. Share your WhatsApp group links and grow your community with LinkShare - the ultimate WhatsApp group directory."
+        keywords="WhatsApp groups, WhatsApp group links, join WhatsApp groups, WhatsApp communities, WhatsApp group directory, WhatsApp link sharing"
+        canonicalURL={window.location.href}
+        ogTitle="LinkShare - Discover and Join WhatsApp Groups"
+        ogDescription="Find and join popular WhatsApp groups across various categories. Share your WhatsApp group links and grow your community."
+        ogImage="/og-home-image.jpg"
+        ogType="website"
+        twitterCard="summary_large_image"
+        twitterTitle="LinkShare - Discover and Join WhatsApp Groups"
+        twitterDescription="Find and join popular WhatsApp groups across various categories. Share your WhatsApp group links and grow your community."
+        twitterImage="/og-home-image.jpg"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "LinkShare - WhatsApp Group Directory",
+          "url": window.location.origin,
+          "description": "The ultimate platform for discovering and sharing WhatsApp groups.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": `${window.location.origin}/search?q={search_term_string}`
+            },
+            "query-input": "required name=search_term_string"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "LinkShare",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${window.location.origin}/logo.png`
+            }
+          }
+        }}
+      />
+      
       <Navbar />
       
       <main className="flex-grow">

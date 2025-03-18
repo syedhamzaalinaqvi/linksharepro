@@ -112,16 +112,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Search WhatsApp groups
+  // Search WhatsApp groups with optional filters
   app.get("/api/search", async (req: Request, res: Response) => {
     try {
       const query = req.query.q as string;
+      const category = req.query.category as string;
+      const country = req.query.country as string;
       
-      if (!query) {
-        return res.status(400).json({ message: "Search query is required" });
+      if (!query && !category && !country) {
+        return res.status(400).json({ message: "At least one search parameter is required" });
       }
       
-      const results = await storage.searchGroups(query);
+      let results = await storage.searchGroups(query || "");
+      
+      // Apply additional filters if provided
+      if (category) {
+        results = results.filter(group => 
+          group.category.toLowerCase() === category.toLowerCase()
+        );
+      }
+      
+      if (country) {
+        results = results.filter(group => 
+          group.country.toLowerCase() === country.toLowerCase()
+        );
+      }
+      
       return res.json(results);
     } catch (error) {
       console.error("Error searching groups:", error);

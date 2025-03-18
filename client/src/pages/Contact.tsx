@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import SEOHead from "@/components/seo/SEOHead";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -62,6 +63,33 @@ export default function Contact() {
   
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title="Contact Us | LinkShare WhatsApp Group Directory"
+        description="Get in touch with the LinkShare team. We're here to help with any questions about our WhatsApp group directory or assist with your WhatsApp group submission."
+        keywords="contact LinkShare, WhatsApp group help, submit WhatsApp group, LinkShare support, WhatsApp directory contact"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact LinkShare",
+          "description": "Get in touch with the LinkShare team for help with the WhatsApp group directory.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "LinkShare",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${window.location.origin}/logo.png`
+            }
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+1-555-123-4567",
+            "contactType": "customer service",
+            "email": "contact@linkshare.example",
+            "areaServed": "Worldwide",
+            "availableLanguage": ["English"]
+          }
+        }}
+      />
       <Navbar />
       
       <main className="flex-grow max-w-6xl mx-auto w-full px-4 py-12">

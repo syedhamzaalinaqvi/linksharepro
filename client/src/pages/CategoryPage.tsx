@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import type { WhatsappGroup } from "@shared/schema";
+import SEOHead from "@/components/seo/SEOHead";
 
 export default function CategoryPage() {
   const { category } = useParams<{ category: string }>();
@@ -20,6 +21,41 @@ export default function CategoryPage() {
   
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <SEOHead 
+        title={`${decodedCategory ? `${decodedCategory} WhatsApp Groups` : 'All WhatsApp Groups'} | LinkShare`}
+        description={`Browse and join the best ${decodedCategory || ''} WhatsApp groups. Find active and popular ${decodedCategory || 'community'} groups to connect with like-minded people on WhatsApp.`}
+        keywords={`${decodedCategory} WhatsApp groups, ${decodedCategory} chat groups, join ${decodedCategory} WhatsApp, WhatsApp ${decodedCategory} communities, ${decodedCategory} group links`}
+        canonicalURL={window.location.href}
+        ogTitle={`${decodedCategory ? `${decodedCategory} WhatsApp Groups` : 'All WhatsApp Groups'} | LinkShare`}
+        ogDescription={`Browse and join the best ${decodedCategory || ''} WhatsApp groups. Find active groups for ${decodedCategory || 'any interest'}.`}
+        ogImage={`/og-category-${decodedCategory.toLowerCase().replace(/\s+/g, '-') || 'all'}.jpg`}
+        ogType="website"
+        twitterCard="summary_large_image"
+        twitterTitle={`${decodedCategory ? `${decodedCategory} WhatsApp Groups` : 'All WhatsApp Groups'} | LinkShare`}
+        twitterDescription={`Browse and join the best ${decodedCategory || ''} WhatsApp groups. Find active groups for ${decodedCategory || 'any interest'}.`}
+        twitterImage={`/og-category-${decodedCategory.toLowerCase().replace(/\s+/g, '-') || 'all'}.jpg`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": `${decodedCategory} WhatsApp Groups`,
+          "description": `Directory of ${decodedCategory} WhatsApp groups for joining and sharing.`,
+          "url": window.location.href,
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": groups.map((group, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "item": {
+                "@type": "SocialMediaPosting",
+                "headline": group.group_name,
+                "description": group.description,
+                "url": `${window.location.origin}/groups/${group.id}`
+              }
+            }))
+          }
+        }}
+      />
+      
       <Navbar />
       
       <main className="flex-grow">
