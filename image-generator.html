@@ -236,6 +236,10 @@
         // Store the current image data
         let currentImageData = null;
 
+        // Freepik API Configuration
+        const FREEPIK_API_KEY = 'FPSX067996b5e02e455ba130f32620e47943';
+        const FREEPIK_API_URL = 'https://api.freepik.com/v1/ai/mystic';
+
         // Style selection
         styleButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -262,12 +266,41 @@
             generateButton.disabled = true;
 
             try {
-                // Use our proxy server instead of direct Freepik API
-                const searchUrl = `/api/search?search=${encodeURIComponent(prompt)}&limit=1`;
-                console.log('Searching for images...');
-                
-                const response = await fetch(searchUrl);
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'x-freepik-api-key': FREEPIK_API_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        structure_reference: "aSDinaTvuI8gbWludGxpZnk=",
+                        structure_strength: 50,
+                        style_reference: "aSDinaTvuI8gbWludGxpZnk=",
+                        adherence: 50,
+                        hdr: 50,
+                        resolution: "2k",
+                        aspect_ratio: "square_1_1",
+                        realism: true,
+                        creative_detailing: 33,
+                        engine: "automatic",
+                        fixed_generation: false,
+                        webhook_url: "https://httpbin.org/post",
+                        filter_nsfw: true,
+                        styling: {
+                            styles: [{
+                                name: "realistic",
+                                strength: 100
+                            }],
+                            characters: []
+                        }
+                    })
+                };
+
+                console.log('Sending request to Freepik API...');
+                const response = await fetch(FREEPIK_API_URL, options);
                 console.log('Response status:', response.status);
+                
                 const data = await response.json();
                 console.log('API Response:', data);
 
@@ -275,30 +308,39 @@
                     throw new Error(data.message || `API Error: ${response.status}`);
                 }
 
-                if (!data.data || data.data.length === 0) {
-                    throw new Error('No images found matching your description');
+                if (!data.data || !data.data.task_id) {
+                    throw new Error('No task ID received from API');
                 }
 
-                // Get the first image data
-                const imageData = data.data[0];
-                console.log('Image data:', imageData);
-                
-                // Get the image URL from the response
-                let imageUrl = imageData.url || 
-                             imageData.image?.url || 
-                             imageData.preview_url || 
-                             imageData.thumbnails?.large;
+                const taskId = data.data.task_id;
+                let statusData;
+                let attempts = 0;
+                const maxAttempts = 30; // Maximum number of attempts (5 minutes with 10-second intervals)
 
-                if (!imageUrl) {
-                    throw new Error('No image URL found in the response');
+                // Poll for status until image is ready
+                while (attempts < maxAttempts) {
+                    statusData = await checkTaskStatus(taskId);
+                    console.log('Current status:', statusData.data.status);
+
+                    if (statusData.data.status === 'COMPLETED') {
+                        if (statusData.data.generated && statusData.data.generated.length > 0) {
+                            const imageUrl = statusData.data.generated[0].url;
+                            generatedImage.src = imageUrl;
+                            currentImageData = { url: imageUrl };
+                            resultSection.classList.remove('hidden');
+                            return;
+                        }
+                        throw new Error('No image URL in completed response');
+                    } else if (statusData.data.status === 'FAILED') {
+                        throw new Error('Image generation failed');
+                    }
+
+                    // Wait 10 seconds before next check
+                    await wait(10000);
+                    attempts++;
                 }
 
-                console.log('Image URL:', imageUrl);
-
-                // Display the image directly
-                generatedImage.src = imageUrl;
-                currentImageData = { url: imageUrl };
-                resultSection.classList.remove('hidden');
+                throw new Error('Timeout waiting for image generation');
             } catch (error) {
                 console.error('Detailed error:', error);
                 alert(`Failed to generate image: ${error.message}`);
@@ -307,6 +349,31 @@
                 generateButton.disabled = false;
             }
         }
+
+        // Function to check task status
+        async function checkTaskStatus(taskId) {
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-freepik-api-key': FREEPIK_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            try {
+                const response = await fetch(`${FREEPIK_API_URL}/status/${taskId}`, options);
+                console.log('Status check response status:', response.status);
+                const data = await response.json();
+                console.log('Status check response:', data);
+                return data;
+            } catch (error) {
+                console.error('Error checking status:', error);
+                throw error;
+            }
+        }
+
+        // Function to wait for a specified time
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         // Event listeners
         generateButton.addEventListener('click', generateImage);
