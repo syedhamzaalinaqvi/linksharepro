@@ -311,8 +311,20 @@
                     throw new Error('No images found matching your description');
                 }
 
-                // Get the first image URL
-                const imageUrl = data.data[0].image.url;
+                // Get the first image URL - Updated to match Freepik API response structure
+                const imageData = data.data[0];
+                console.log('Image data:', imageData);
+                
+                // Try different possible URL paths in the response
+                let imageUrl = imageData.url || 
+                             imageData.image?.url || 
+                             imageData.preview_url || 
+                             imageData.thumbnails?.large;
+
+                if (!imageUrl) {
+                    throw new Error('No image URL found in the response');
+                }
+
                 console.log('Image URL:', imageUrl);
 
                 // Display the image
