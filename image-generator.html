@@ -239,6 +239,7 @@
         // Freepik API Configuration
         const FREEPIK_API_KEY = 'FPSX067996b5e02e455ba130f32620e47943';
         const FREEPIK_API_URL = 'https://api.freepik.com/v1/ai/mystic';
+        const FREEPIK_STATUS_URL = 'https://api.freepik.com/v1/ai/mystic/status';
 
         // Style selection
         styleButtons.forEach(button => {
@@ -251,6 +252,31 @@
                 button.classList.add('bg-purple-600', 'text-white');
             });
         });
+
+        // Function to check task status
+        async function checkTaskStatus(taskId) {
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-freepik-api-key': FREEPIK_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            try {
+                const response = await fetch(`${FREEPIK_STATUS_URL}/${taskId}`, options);
+                console.log('Status check response status:', response.status);
+                const data = await response.json();
+                console.log('Status check response:', data);
+                return data;
+            } catch (error) {
+                console.error('Error checking status:', error);
+                throw error;
+            }
+        }
+
+        // Function to wait for a specified time
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         // Generate image function
         async function generateImage() {
@@ -266,6 +292,7 @@
             generateButton.disabled = true;
 
             try {
+                // Initial request to start generation
                 const options = {
                     method: 'POST',
                     headers: {
@@ -297,20 +324,53 @@
                     })
                 };
 
+                console.log('Sending request to Freepik API...');
                 const response = await fetch(FREEPIK_API_URL, options);
+                console.log('Response status:', response.status);
+                
                 const data = await response.json();
+                console.log('Initial API Response:', data);
 
                 if (!response.ok) {
-                    throw new Error(data.message || 'Failed to generate image');
+                    throw new Error(data.message || `API Error: ${response.status}`);
                 }
 
-                // Display the generated image
-                generatedImage.src = data.url;
-                currentImageData = data;
-                resultSection.classList.remove('hidden');
+                if (!data.data || !data.data.task_id) {
+                    throw new Error('No task ID received from API');
+                }
+
+                const taskId = data.data.task_id;
+                let statusData;
+                let attempts = 0;
+                const maxAttempts = 30; // Maximum number of attempts (5 minutes with 10-second intervals)
+
+                // Poll for status until image is ready
+                while (attempts < maxAttempts) {
+                    statusData = await checkTaskStatus(taskId);
+                    console.log('Current status:', statusData.data.status);
+
+                    if (statusData.data.status === 'COMPLETED') {
+                        if (statusData.data.generated && statusData.data.generated.length > 0) {
+                            const imageUrl = statusData.data.generated[0].url;
+                            generatedImage.src = imageUrl;
+                            currentImageData = { url: imageUrl };
+                            resultSection.classList.remove('hidden');
+                            return;
+                        }
+                        throw new Error('No image URL in completed response');
+                    } else if (statusData.data.status === 'FAILED') {
+                        throw new Error('Image generation failed');
+                    }
+
+                    // Wait 10 seconds before next check
+                    await wait(10000);
+                    attempts++;
+                }
+
+                throw new Error('Timeout waiting for image generation');
             } catch (error) {
-                console.error('Error generating image:', error);
-                alert('Failed to generate image. Please try again.');
+                console.error('Detailed error:', error);
+                alert(`Failed to generate image: ${error.message}`);
             } finally {
                 loadingState.classList.add('hidden');
                 generateButton.disabled = false;
