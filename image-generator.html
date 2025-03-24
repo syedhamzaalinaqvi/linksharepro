@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generator - AI Toolkit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #8b5cf6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gray-900/50 backdrop-blur-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-robot text-2xl text-blue-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <span class="text-xl font-bold gradient-text">AI Toolkit</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                    <a href="index.html#tools" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tools</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4">
+                    <span class="gradient-text">AI Image Generator</span>
+                </h1>
+                <p class="text-xl text-gray-400">
+                    Create stunning images from text descriptions using advanced AI models.
+                </p>
+            </div>
+
+            <!-- Tool Interface -->
+            <div class="bg-gray-800 rounded-xl p-6 shadow-xl">
+                <!-- Prompt Input -->
+                <div class="mb-6">
+                    <label for="prompt" class="block text-sm font-medium text-gray-300 mb-2">Image Description</label>
+                    <textarea id="prompt" rows="3" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white shadow-sm focus:border-purple-500 focus:ring-purple-500" placeholder="Describe the image you want to generate..."></textarea>
+                </div>
+
+                <!-- Style Selection -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Style</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        <button class="style-btn active px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition-colors">
+                            Realistic
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            Anime
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            Oil Painting
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            Watercolor
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            Digital Art
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            Sketch
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            3D Render
+                        </button>
+                        <button class="style-btn px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600 transition-colors">
+                            Pixel Art
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Size Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="width" class="block text-sm font-medium text-gray-300 mb-2">Width (px)</label>
+                        <select id="width" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                            <option value="512">512</option>
+                            <option value="768">768</option>
+                            <option value="1024">1024</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="height" class="block text-sm font-medium text-gray-300 mb-2">Height (px)</label>
+                        <select id="height" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                            <option value="512">512</option>
+                            <option value="768">768</option>
+                            <option value="1024">1024</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="flex justify-center mb-6">
+                    <button id="generate" class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                        <i class="fas fa-magic mr-2"></i>
+                        Generate Image
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading" class="hidden">
+                    <div class="flex flex-col items-center justify-center py-8">
+                        <div class="loading-spinner mb-4"></div>
+                        <p class="text-gray-400">Generating your image...</p>
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div id="result" class="hidden">
+                    <div class="space-y-4">
+                        <div class="relative group">
+                            <img id="generated-image" src="" alt="Generated image" class="w-full rounded-lg shadow-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity rounded-lg flex items-center justify-center">
+                                <button id="download" class="opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    <i class="fas fa-download mr-2"></i>
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex justify-center space-x-4">
+                            <button id="regenerate" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                <i class="fas fa-redo mr-2"></i>
+                                Regenerate
+                            </button>
+                            <button id="variations" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <i class="fas fa-images mr-2"></i>
+                                Variations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-purple-500 mb-2">
+                        <i class="fas fa-palette text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Multiple Styles</h3>
+                    <p class="text-gray-400 text-sm">Choose from various artistic styles and effects</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-blue-500 mb-2">
+                        <i class="fas fa-expand text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Custom Sizes</h3>
+                    <p class="text-gray-400 text-sm">Generate images in different dimensions</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-green-500 mb-2">
+                        <i class="fas fa-download text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">High Quality</h3>
+                    <p class="text-gray-400 text-sm">Download high-resolution images</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 backdrop-blur-lg py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 text-sm">
+                    © 2024 AI Toolkit. All rights reserved.
+                </div>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const promptInput = document.getElementById('prompt');
+        const styleButtons = document.querySelectorAll('.style-btn');
+        const widthSelect = document.getElementById('width');
+        const heightSelect = document.getElementById('height');
+        const generateButton = document.getElementById('generate');
+        const loadingState = document.getElementById('loading');
+        const resultSection = document.getElementById('result');
+        const generatedImage = document.getElementById('generated-image');
+        const downloadButton = document.getElementById('download');
+        const regenerateButton = document.getElementById('regenerate');
+        const variationsButton = document.getElementById('variations');
+
+        // Store the current image data
+        let currentImageData = null;
+
+        // Freepik API Configuration
+        const FREEPIK_API_KEY = 'FPSX067996b5e02e455ba130f32620e47943';
+        const FREEPIK_API_URL = 'https://api.freepik.com/v1/ai/mystic';
+
+        // Style selection
+        styleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                styleButtons.forEach(btn => {
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.classList.add('bg-gray-700', 'text-gray-300');
+                });
+                button.classList.remove('bg-gray-700', 'text-gray-300');
+                button.classList.add('bg-purple-600', 'text-white');
+            });
+        });
+
+        // Generate image function
+        async function generateImage() {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                alert('Please enter an image description');
+                return;
+            }
+
+            // Show loading state
+            loadingState.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            generateButton.disabled = true;
+
+            try {
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'x-freepik-api-key': FREEPIK_API_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        structure_reference: "aSDinaTvuI8gbWludGxpZnk=",
+                        structure_strength: 50,
+                        style_reference: "aSDinaTvuI8gbWludGxpZnk=",
+                        adherence: 50,
+                        hdr: 50,
+                        resolution: "2k",
+                        aspect_ratio: "square_1_1",
+                        realism: true,
+                        creative_detailing: 33,
+                        engine: "automatic",
+                        fixed_generation: false,
+                        webhook_url: "https://httpbin.org/post",
+                        filter_nsfw: true,
+                        styling: {
+                            styles: [{
+                                name: "realistic",
+                                strength: 100
+                            }],
+                            characters: []
+                        }
+                    })
+                };
+
+                const response = await fetch(FREEPIK_API_URL, options);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to generate image');
+                }
+
+                // Display the generated image
+                generatedImage.src = data.url;
+                currentImageData = data;
+                resultSection.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error generating image:', error);
+                alert('Failed to generate image. Please try again.');
+            } finally {
+                loadingState.classList.add('hidden');
+                generateButton.disabled = false;
+            }
+        }
+
+        // Event listeners
+        generateButton.addEventListener('click', generateImage);
+        regenerateButton.addEventListener('click', generateImage);
+
+        // Download functionality
+        downloadButton.addEventListener('click', () => {
+            if (currentImageData && currentImageData.url) {
+                const link = document.createElement('a');
+                link.href = currentImageData.url;
+                link.download = 'generated-image.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+
+        // Variations functionality
+        variationsButton.addEventListener('click', () => {
+            if (currentImageData) {
+                generateImage();
+            }
+        });
+
+        // Set default values for width and height
+        widthSelect.value = '512';
+        heightSelect.value = '512';
+
+        // Disable size selection for now
+        widthSelect.disabled = true;
+        heightSelect.disabled = true;
+
+        // Update size selection UI to show it's disabled
+        widthSelect.classList.add('opacity-50', 'cursor-not-allowed');
+        heightSelect.classList.add('opacity-50', 'cursor-not-allowed');
+    </script>
+</body>
+</html> 

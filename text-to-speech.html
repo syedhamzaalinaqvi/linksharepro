@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech - AI Toolkit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gray-900/50 backdrop-blur-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-robot text-2xl text-blue-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <span class="text-xl font-bold gradient-text">AI Toolkit</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                    <a href="index.html#tools" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tools</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4">
+                    <span class="gradient-text">Text to Speech</span>
+                </h1>
+                <p class="text-xl text-gray-400">
+                    Convert your text into natural-sounding speech with multiple voices and languages.
+                </p>
+            </div>
+
+            <!-- Tool Interface -->
+            <div class="bg-gray-800 rounded-xl p-6 shadow-xl">
+                <!-- Text Input -->
+                <div class="mb-6">
+                    <label for="text" class="block text-sm font-medium text-gray-300 mb-2">Enter Text</label>
+                    <textarea id="text" rows="4" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Type or paste your text here..."></textarea>
+                </div>
+
+                <!-- Voice Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="voice" class="block text-sm font-medium text-gray-300 mb-2">Select Voice</label>
+                        <select id="voice" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="en-US-Standard-A">English (US) - Female</option>
+                            <option value="en-US-Standard-B">English (US) - Male</option>
+                            <option value="en-GB-Standard-A">English (UK) - Female</option>
+                            <option value="en-GB-Standard-B">English (UK) - Male</option>
+                            <option value="es-ES-Standard-A">Spanish - Female</option>
+                            <option value="fr-FR-Standard-A">French - Female</option>
+                            <option value="de-DE-Standard-A">German - Female</option>
+                            <option value="it-IT-Standard-A">Italian - Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="speed" class="block text-sm font-medium text-gray-300 mb-2">Speech Speed</label>
+                        <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-sm text-gray-400 mt-1">
+                            <span>Slow</span>
+                            <span>Normal</span>
+                            <span>Fast</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="speak" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-play mr-2"></i>
+                            Speak
+                        </button>
+                        <button id="pause" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                            <i class="fas fa-pause mr-2"></i>
+                            Pause
+                        </button>
+                        <button id="stop" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            <i class="fas fa-stop mr-2"></i>
+                            Stop
+                        </button>
+                    </div>
+                    <button id="download" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <i class="fas fa-download mr-2"></i>
+                        Download
+                    </button>
+                </div>
+
+                <!-- Preview -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-300 mb-2">Preview</h3>
+                    <div id="preview" class="bg-gray-700 rounded-lg p-4 text-gray-300">
+                        <p class="text-sm">Your converted speech will appear here...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-blue-500 mb-2">
+                        <i class="fas fa-language text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Multiple Languages</h3>
+                    <p class="text-gray-400 text-sm">Support for various languages and accents</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-purple-500 mb-2">
+                        <i class="fas fa-sliders-h text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Customizable</h3>
+                    <p class="text-gray-400 text-sm">Adjust speed and voice settings</p>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="text-green-500 mb-2">
+                        <i class="fas fa-download text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Downloadable</h3>
+                    <p class="text-gray-400 text-sm">Save your audio files for later use</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 backdrop-blur-lg py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 text-sm">
+                    © 2024 AI Toolkit. All rights reserved.
+                </div>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Text-to-Speech functionality
+        const textInput = document.getElementById('text');
+        const voiceSelect = document.getElementById('voice');
+        const speedInput = document.getElementById('speed');
+        const speakButton = document.getElementById('speak');
+        const pauseButton = document.getElementById('pause');
+        const stopButton = document.getElementById('stop');
+        const downloadButton = document.getElementById('download');
+        const preview = document.getElementById('preview');
+
+        let utterance = null;
+        let isPaused = false;
+
+        // Initialize speech synthesis
+        function initSpeechSynthesis() {
+            utterance = new SpeechSynthesisUtterance();
+            utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === voiceSelect.value);
+            utterance.rate = speedInput.value;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+
+            utterance.onstart = () => {
+                speakButton.disabled = true;
+                pauseButton.disabled = false;
+                stopButton.disabled = false;
+                preview.innerHTML = `<p class="text-sm">Speaking: ${textInput.value}</p>`;
+            };
+
+            utterance.onend = () => {
+                speakButton.disabled = false;
+                pauseButton.disabled = true;
+                stopButton.disabled = true;
+                preview.innerHTML = `<p class="text-sm">Speech completed</p>`;
+            };
+        }
+
+        // Event Listeners
+        speakButton.addEventListener('click', () => {
+            if (!utterance) {
+                initSpeechSynthesis();
+            }
+            utterance.text = textInput.value;
+            speechSynthesis.speak(utterance);
+        });
+
+        pauseButton.addEventListener('click', () => {
+            if (isPaused) {
+                speechSynthesis.resume();
+                pauseButton.innerHTML = '<i class="fas fa-pause mr-2"></i>Pause';
+            } else {
+                speechSynthesis.pause();
+                pauseButton.innerHTML = '<i class="fas fa-play mr-2"></i>Resume';
+            }
+            isPaused = !isPaused;
+        });
+
+        stopButton.addEventListener('click', () => {
+            speechSynthesis.cancel();
+            speakButton.disabled = false;
+            pauseButton.disabled = true;
+            stopButton.disabled = true;
+            preview.innerHTML = `<p class="text-sm">Speech stopped</p>`;
+        });
+
+        voiceSelect.addEventListener('change', () => {
+            utterance = null;
+            initSpeechSynthesis();
+        });
+
+        speedInput.addEventListener('input', () => {
+            if (utterance) {
+                utterance.rate = speedInput.value;
+            }
+        });
+
+        // Download functionality (mock for now)
+        downloadButton.addEventListener('click', () => {
+            preview.innerHTML = `<p class="text-sm">Downloading audio file...</p>`;
+            setTimeout(() => {
+                preview.innerHTML = `<p class="text-sm">Audio file downloaded successfully!</p>`;
+            }, 2000);
+        });
+    </script>
+</body>
+</html> 
