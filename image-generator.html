@@ -292,7 +292,7 @@
             generateButton.disabled = true;
 
             try {
-                // Initial request to start generation
+                // Simplified API request
                 const options = {
                     method: 'POST',
                     headers: {
@@ -301,26 +301,11 @@
                     },
                     body: JSON.stringify({
                         prompt: prompt,
-                        structure_reference: "aSDinaTvuI8gbWludGxpZnk=",
-                        structure_strength: 50,
-                        style_reference: "aSDinaTvuI8gbWludGxpZnk=",
-                        adherence: 50,
-                        hdr: 50,
                         resolution: "2k",
                         aspect_ratio: "square_1_1",
                         realism: true,
-                        creative_detailing: 33,
                         engine: "automatic",
-                        fixed_generation: false,
-                        webhook_url: "https://httpbin.org/post",
-                        filter_nsfw: true,
-                        styling: {
-                            styles: [{
-                                name: "realistic",
-                                strength: 100
-                            }],
-                            characters: []
-                        }
+                        filter_nsfw: true
                     })
                 };
 
